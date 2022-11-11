@@ -1,13 +1,18 @@
 from django.shortcuts import render, redirect
 from app.form import CarrosForm
 from app.models import Carro
+from django.core.paginator import Paginator
 
 # Create your views here.
 
 
 def home(request):
     data = {}
-    data['db'] = Carro.objects.all()
+    #data['db'] = Carro.objects.all()
+    all = Carro.objects.all()
+    paginator = Paginator(all, 2)
+    pages = request.GET.get('page')
+    data['db'] = paginator.get_page(pages)
     return render(request, 'index.html', data)
 
 
